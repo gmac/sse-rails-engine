@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'concurrent/map'
+
 module SseRailsEngine
   # This class provides the ability to track SSE connections and broadcast events
   # to all connected clients from anywhere in your Rails app.
@@ -22,7 +24,7 @@ module SseRailsEngine
 
     def initialize
       @mutex = Mutex.new
-      @connections = ThreadSafe::Cache.new
+      @connections = Concurrent::Map.new
     end
 
     def register(env)
